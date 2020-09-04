@@ -1,6 +1,7 @@
 package com.tourism.app.controller;
 
 import com.tourism.app.model.Trip;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
  Controller to manage Trips
  for Tourist and Tour Guide
  */
+@RestController
 public class TripManager {
     private ArrayList<Trip> trip;
 
@@ -16,11 +18,14 @@ public class TripManager {
     }
 
     //add new trip
+    @GetMapping("/new-trip")
     public void addTrip(Trip trip){}
 
     //Update Trip by id
-    public void updateTrip(long id){}
+    @PutMapping("/update/{id}")
+    public void updateTrip(@PathVariable long id){}
 
     //delete Trip by id
-    public void deleteTrip(long id){}
+    @DeleteMapping("/remove/{id}")
+    public void deleteTrip(@PathVariable long id){}
 }
