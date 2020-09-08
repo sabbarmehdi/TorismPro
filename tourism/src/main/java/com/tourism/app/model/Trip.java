@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Trip {
+public abstract class Trip {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)

@@ -1,6 +1,6 @@
 package com.tourism.app.controller;
 
-import com.tourism.app.model.Trip;
+import com.tourism.app.model.TripTourist;
 import com.tourism.app.service.tripList.TripListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +28,16 @@ public class TripListController {
 
     //Get all Tips
     @GetMapping("/all-trips")
-    public ResponseEntity<List<Trip>> getAllTrips(){
-        List<Trip> list = tripListService.retrieveTrips();
-        return new ResponseEntity<List<Trip>>(list, HttpStatus.OK);
+    public ResponseEntity<List<TripTourist>> getAllTrips(){
+        List<TripTourist> list = tripListService.retrieveTrips();
+        return new ResponseEntity<List<TripTourist>>(list, HttpStatus.OK);
     }
 
     //Get Trips by Name
     @GetMapping("/trip-by-name/{tripName}")
-    public ResponseEntity<List<Trip>> getTripByName(@PathVariable String tripName){
-       List<Trip> list = tripListService.retrieveTripsByName(tripName);
-       return new ResponseEntity<List<Trip>>(list, HttpStatus.OK);
+    public ResponseEntity<List<TripTourist>> getTripByName(@PathVariable String tripName){
+       List<TripTourist> list = tripListService.retrieveTripsByName(tripName);
+       return new ResponseEntity<List<TripTourist>>(list, HttpStatus.OK);
     }
 
     //Get Trips by City

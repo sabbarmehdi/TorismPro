@@ -1,11 +1,11 @@
 package com.tourism.app.service.tripList;
 
-import com.tourism.app.model.Trip;
+import com.tourism.app.model.TripTourist;
 
 import java.util.List;
 
 public interface TripListService {
-    List<Trip> retrieveTrips();
-    List<Trip> retrieveTripsByName(String tripName);
+    List<TripTourist> retrieveTrips();
+    List<TripTourist> retrieveTripsByName(String tripName);
     //List<Trip> retrieveTripsByStartCity();
 }
