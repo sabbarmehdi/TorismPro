@@ -1,13 +1,26 @@
 package com.tourism.app.model;
 
 
-import com.tourism.app.controller.TripManager;
+import javax.persistence.*;
 
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Trip {
+
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "trip_name")
     private String tripName;
+
+    @Column(name = "description")
     private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
     private Trajectory trajectory;
+
 
     public Trip() {
     }

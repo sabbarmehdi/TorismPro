@@ -1,25 +1,33 @@
 package com.tourism.app.model;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.Date;
 
-
+@Entity(name = "trajectory")
 public class Trajectory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private ArrayList stations;
+    //private ArrayList stations;
+    @Column(name = "description")
     private String description;
+    @Column(name = "distance")
     private String distance;
-    private Date time;
+    @Column(name = "trajectory_time")
+    private Date trajectoryTime;
+
+    @OneToOne(mappedBy = "trajectory")
+    private Trip trip;
 
     public Trajectory() {
     }
 
-    public Trajectory(long id, ArrayList stations, String description, String distance, Date time) {
+    public Trajectory(long id, /*ArrayList stations,*/ String description, String distance, Date trajectoryTime) {
         this.id = id;
-        this.stations = stations;
+       // this.stations = stations;
         this.description = description;
         this.distance = distance;
-        this.time = time;
+        this.trajectoryTime = trajectoryTime;
     }
 
     public long getId() {
@@ -29,7 +37,7 @@ public class Trajectory {
     public void setId(long id) {
         this.id = id;
     }
-
+   /*
     public ArrayList getStations() {
         return stations;
     }
@@ -37,7 +45,7 @@ public class Trajectory {
     public void setStations(ArrayList stations) {
         this.stations = stations;
     }
-
+*/
     public String getDescription() {
         return description;
     }
@@ -54,11 +62,11 @@ public class Trajectory {
         this.distance = distance;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getTrajectoryTime() {
+        return trajectoryTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTrajectoryTime(Date time) {
+        this.trajectoryTime = time;
     }
 }
