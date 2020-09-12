@@ -1,15 +1,12 @@
-package com.tourism.app.controller;
+package com.tourism.app.tripManagment.controller;
 
-import com.tourism.app.exception.TripNotFoundException;
-import com.tourism.app.model.Trip;
-import com.tourism.app.repository.TripManagerRepo;
-import javassist.NotFoundException;
+import com.tourism.app.tripManagment.exception.TripNotFoundException;
+import com.tourism.app.tripManagment.model.Trip;
+import com.tourism.app.tripManagment.repository.TripManagerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +20,6 @@ public class TripManagerController {
     @Autowired
     private TripManagerRepo tripManagerRepo;
 
-    //private ArrayList<Trip> trip;
-
     //add new trip
     @PostMapping("/new-trip")
     public Trip addTrip(@RequestBody Trip trip){
@@ -34,7 +29,7 @@ public class TripManagerController {
     //Update Trip by id
 
     @PutMapping("/update-trip/{id}")
-    public ResponseEntity<Trip> updateTrip(@PathVariable(value = "id") long tripId,
+    public ResponseEntity<Trip> updateTrip(@PathVariable(value = "id") Long tripId,
                                            @RequestBody Trip tripDetails) throws TripNotFoundException {
         Trip trip = tripManagerRepo.findById(tripId)
                 .orElseThrow(() -> new TripNotFoundException("Trip not found for this Id :: " + tripId));

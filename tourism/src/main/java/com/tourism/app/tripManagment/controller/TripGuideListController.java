@@ -1,7 +1,7 @@
-package com.tourism.app.controller;
+package com.tourism.app.tripManagment.controller;
 
-import com.tourism.app.model.TripGuide;
-import com.tourism.app.service.tripGuideList.TripGuideListService;
+import com.tourism.app.tripManagment.model.TripGuide;
+import com.tourism.app.tripManagment.service.tripGuideList.TripGuideListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

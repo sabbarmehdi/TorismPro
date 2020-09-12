@@ -1,7 +1,7 @@
-package com.tourism.app.repository;
+package com.tourism.app.tripManagment.repository;
 
 
-import com.tourism.app.model.TripGuide;
+import com.tourism.app.tripManagment.model.TripGuide;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

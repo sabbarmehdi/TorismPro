@@ -1,4 +1,4 @@
-package com.tourism.app.model;
+package com.tourism.app.tripManagment.model;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +21,7 @@ public class Trajectory {
 
     public Trajectory() {
     }
+
 
     public Trajectory(long id, /*ArrayList stations,*/ String description, String distance, Date trajectoryTime) {
         this.id = id;

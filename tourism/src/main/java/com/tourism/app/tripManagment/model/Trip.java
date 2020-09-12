@@ -1,4 +1,4 @@
-package com.tourism.app.model;
+package com.tourism.app.tripManagment.model;
 
 
 import javax.persistence.*;
@@ -9,17 +9,17 @@ public abstract class Trip {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private long id;
+    protected long id;
 
     @Column(name = "trip_name")
-    private String tripName;
+    protected String tripName;
 
     @Column(name = "description")
-    private String description;
+    protected String description;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(unique = true)
-    private Trajectory trajectory;
+    protected Trajectory trajectory;
 
 
     public Trip() {

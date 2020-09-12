@@ -1,7 +1,7 @@
-package com.tourism.app.service.tripGuideList;
+package com.tourism.app.tripManagment.service.tripGuideList;
 
-import com.tourism.app.model.TripGuide;
-import com.tourism.app.repository.TripGuideListRepo;
+import com.tourism.app.tripManagment.model.TripGuide;
+import com.tourism.app.tripManagment.repository.TripGuideListRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.tourism.app.service.tripList;
+package com.tourism.app.tripManagment.service.tripList;
 
-import com.tourism.app.model.TripTourist;
+import com.tourism.app.tripManagment.model.TripTourist;
 
 import java.util.List;
 

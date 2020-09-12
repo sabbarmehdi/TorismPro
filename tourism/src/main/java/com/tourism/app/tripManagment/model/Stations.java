@@ -1,4 +1,4 @@
-package com.tourism.app.model;
+package com.tourism.app.tripManagment.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
