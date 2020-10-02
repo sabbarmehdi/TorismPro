@@ -1,7 +1,11 @@
 package com.tourism.app.tripManagment.model;
 
 
+import com.tourism.app.clientManagment.model.Client;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -9,7 +13,7 @@ public abstract class Trip {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    protected long id;
+    protected Long id;
 
     @Column(name = "trip_name")
     protected String tripName;
@@ -21,15 +25,26 @@ public abstract class Trip {
     @JoinColumn(unique = true)
     protected Trajectory trajectory;
 
+    @ManyToMany(mappedBy = "trips")
+    private Set<Client> clients = new HashSet<>();
 
     public Trip() {
     }
 
-    public Trip(long id, String tripName, String description, Trajectory trajectory) {
+    public Trip(long id, String tripName, String description, Trajectory trajectory, Set<Client> clients) {
         this.id = id;
         this.tripName = tripName;
         this.description = description;
         this.trajectory = trajectory;
+        this.clients = clients;
+    }
+
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
     }
 
     public long getId() {

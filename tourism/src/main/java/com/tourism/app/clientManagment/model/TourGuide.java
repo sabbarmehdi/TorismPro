@@ -1,6 +1,11 @@
 package com.tourism.app.clientManagment.model;
 
+import com.tourism.app.tripManagment.model.Trip;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity(name = "tour_guide")
 public class TourGuide extends Client{
@@ -17,8 +22,9 @@ public class TourGuide extends Client{
     public TourGuide() {
     }
 
-    public TourGuide(Long id, String firstName, String lastName, String mail, String password, String role, String cin, String license, Car car) {
-        super(id, firstName, lastName, mail, password, role);
+    public TourGuide(Long id, String firstName, String lastName, @NotBlank @Size(max = 50) String username, String mail,
+                     String password, Set<Role> roles, Set<Trip> trips, String cin, String license, Car car) {
+        super(id, firstName, lastName, username, mail, password, roles, trips);
         this.cin = cin;
         this.license = license;
         this.car = car;
@@ -28,6 +34,9 @@ public class TourGuide extends Client{
         this.cin = cin;
         this.license = license;
         this.car = car;
+    }
+
+    public TourGuide(String username, String email, String encode) {
     }
 
     public String getCin() {

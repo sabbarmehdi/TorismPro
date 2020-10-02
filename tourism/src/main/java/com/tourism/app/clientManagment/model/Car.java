@@ -1,5 +1,6 @@
 package com.tourism.app.clientManagment.model;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -19,7 +20,7 @@ public class Car {
     @OneToOne(mappedBy = "car")
     private TourGuide tourGuide;
 
-    public Car(Long id, String registrationNum, String model, String owner, int seatsNum, TourGuide tourGuide) {
+    public Car(Long id, String registrationNum, String model, String owner, int seatsNum, com.tourism.app.clientManagment.model.TourGuide tourGuide) {
         this.id = id;
         this.registrationNum = registrationNum;
         this.model = model;
@@ -71,7 +72,7 @@ public class Car {
         this.seatsNum = seatsNum;
     }
 
-    public TourGuide getTourGuide() {
+    public com.tourism.app.clientManagment.model.TourGuide getTourGuide() {
         return tourGuide;
     }
 

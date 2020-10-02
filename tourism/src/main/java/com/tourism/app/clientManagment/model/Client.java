@@ -1,7 +1,13 @@
 package com.tourism.app.clientManagment.model;
 
 
+import com.tourism.app.tripManagment.model.Trip;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -16,6 +22,10 @@ public abstract class Client {
     @Column(name = "last_name")
     protected String lastName;
 
+    @NotBlank
+    @Size(max = 50)
+    private String username;
+
     @Column(name = "mail")
     protected String mail;
 
@@ -23,18 +33,50 @@ public abstract class Client {
     protected String password;
 
     @Column(name = "role")
-    protected String role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    protected Set<Role> roles = new HashSet<>();
 
-    public Client(Long id, String firstName, String lastName, String mail, String password, String role) {
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "trip_client",
+                joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "id"))
+    private Set<Trip> trips;
+
+
+    public Client(Long id, String firstName, String lastName, @NotBlank @Size(max = 50) String username, String mail, String password, Set<Role> roles, Set<Trip> trips) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.mail = mail;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
+        this.trips = trips;
     }
 
     public Client() {
+    }
+
+    public Client(String username, String email, String encode) {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     public Long getId() {
@@ -77,11 +119,11 @@ public abstract class Client {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

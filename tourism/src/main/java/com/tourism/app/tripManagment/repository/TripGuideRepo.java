@@ -10,7 +10,10 @@ import java.util.List;
 
 
 @Repository
-public interface TripGuideListRepo extends JpaRepository<TripGuide, Long> {
+public interface TripGuideRepo extends JpaRepository<TripGuide, Long> {
     @Query("select t from TripGuide t where UPPER(t.tripName) like concat('%', upper(?1),'%')")
     List<TripGuide> findTripsGuideByName(String tripName);
+
+    @Query("select t from TripGuide t where t.id=:id")
+    TripGuide findTripGuideById(Long id);
 }

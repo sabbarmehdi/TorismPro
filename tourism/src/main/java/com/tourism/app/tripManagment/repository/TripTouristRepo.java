@@ -7,7 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface TripListRepo extends JpaRepository<TripTourist, Long> {
+public interface TripTouristRepo extends JpaRepository<TripTourist, Long> {
+
     @Query("select t from trip_tourist t where UPPER(t.tripName) like concat('%', upper(?1),'%')")
     List<TripTourist> findTripsByName(String tripName);
+
+    @Query("select t from trip_tourist t where t.id=:id")
+    TripTourist findTripById(Long id);
 }
