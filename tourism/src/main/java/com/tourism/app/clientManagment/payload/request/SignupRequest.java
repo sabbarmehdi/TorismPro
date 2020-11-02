@@ -7,31 +7,34 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
+import java.util.Set;
 
 
 public class SignupRequest {
 
-	@NotBlank
-    @Size(min = 3, max = 50)
-    private String username;
+	//@NotBlank
+	@Size(min = 3, max = 50)
+	private String username;
 
-	@NotBlank
-    @Size(min = 3, max = 50)
-    private String firstName;
+	//@NotBlank
+	@Size(min = 1, max = 50)
+	private String firstName;
 
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String lastName;
+	//@NotBlank
+	@Size(min = 1, max = 50)
+	private String lastName;
 
-    @NotBlank
-    @Size(max = 100)
-    @Email
-    private String email;
+	//@NotBlank
+	@Size(max = 100)
+	@Email
+	private String email;
 
-	@NotBlank
-    @Size(min = 6, max = 100)
-    private static String password;
+	private Set<String> role;
+
+
+	//@NotBlank
+	@Size(min = 6, max = 100)
+	private static String password;
 
 
 	private String cin;
@@ -39,6 +42,7 @@ public class SignupRequest {
 	private String license;
 
 	private Car car;
+
 
 	public String getUsername() {
 		return username;
@@ -72,12 +76,20 @@ public class SignupRequest {
 		this.email = email;
 	}
 
+	public Set<String> getRole() {
+		return role;
+	}
+
+	public void setRole(Set<String> role) {
+		this.role = role;
+	}
+
 	public static String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public static void setPassword(String password) {
+		SignupRequest.password = password;
 	}
 
 	public String getCin() {

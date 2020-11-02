@@ -16,7 +16,8 @@ import com.tourism.app.clientManagment.payload.response.JwtResponse;
 import com.tourism.app.clientManagment.payload.response.MessageResponse;
 import com.tourism.app.clientManagment.repository.*;
 import com.tourism.app.clientManagment.security.jwt.JwtUtils;
-import com.tourism.app.clientManagment.security.services.UserDetailsImpl;
+import com.tourism.app.clientManagment.services.RoleService;
+import com.tourism.app.clientManagment.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -40,6 +41,9 @@ public class AuthController {
 
     @Autowired
     ClientRepo clientRepo;
+
+    @Autowired
+    RoleService roleService;
 
     @Autowired
     AdminRepo adminRepo;
@@ -82,38 +86,56 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (clientRepo.existsByUsername(signUpRequest.getUsername())) {
+        System.out.println("username : " + signUpRequest.getUsername());
+        System.out.println("lastname : " + signUpRequest.getLastName());
+        System.out.println("firstname : " + signUpRequest.getFirstName());
+        System.out.println("email : " + signUpRequest.getEmail());
+        System.out.println("password : " + signUpRequest.getPassword());
+
+
+        if (touristRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (clientRepo.existsByMail(signUpRequest.getEmail())) {
+        if (touristRepo.existsByMail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        Tourist tourist = new Tourist(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword())) {
-        };
+        Tourist tourist = new Tourist();
+            tourist.setUsername(signUpRequest.getUsername());
+            tourist.setFirstName(signUpRequest.getFirstName());
+            tourist.setLastName(signUpRequest.getLastName());
+            tourist.setMail(signUpRequest.getEmail());
+            tourist.setPassword(encoder.encode(SignupRequest.getPassword()));
 
             Set<Role> roles = new HashSet<>();
 
-            Optional<Role> optionalRole = Optional.ofNullable(roleRepository.findByName(ERole.ROLE_USER));
-            Role userRole = optionalRole.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Role userRole = roleService.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
 
+        System.out.println("role : " + userRole);
+
+        /*System.out.println("username : " + signUpRequest.getUsername());
+        System.out.println("lastname : " + signUpRequest.getLastName());
+        System.out.println("firstname : " + signUpRequest.getFirstName());
+        System.out.println("email : " + signUpRequest.getEmail());
+        System.out.println("password : " + signUpRequest.getPassword());
+        System.out.println("role : " + userRole);*/
 
         tourist.setRoles(roles);
-        clientRepo.save(tourist);
+        touristRepo.save(tourist);
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/tour-guide/signup")
+    @PostMapping("/guide/signup")
     public ResponseEntity<?> registerTourGuide(@Valid @RequestBody SignupRequest signUpRequest) {
         if (guideRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity

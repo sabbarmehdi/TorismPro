@@ -12,6 +12,7 @@ public class TourGuide extends Client{
 
     @Column(name = "cin")
     private String cin;
+
     @Column(name = "license")
     private String license;
 

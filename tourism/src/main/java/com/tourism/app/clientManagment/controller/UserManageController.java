@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ClientManageController {
+@RequestMapping("/api/manage")
+public class UserManageController {
     @Autowired
     private ClientRepo clientRepo;
     @Autowired
@@ -23,11 +24,11 @@ public class ClientManageController {
     @Autowired
     private TourGuideRepo tourGuideRepo;
 
-    @PostMapping("/")
+  /* @PostMapping("/")
     public Client addClient(@RequestBody Client client){
         return (Client) clientRepo.save(client);
     }
-
+*/
 
     @PutMapping("/update-tourist/{touristId}")
     public ResponseEntity<Tourist> updateTourist(@PathVariable Long touristId,

@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/trip-guide")
 public class TripGuideManagerController {
     @Autowired
     private TripGuideRepo guideRepo;
+
     @Autowired
     private TrajectoryRepo trajectoryRepo;
 
@@ -28,7 +29,6 @@ public class TripGuideManagerController {
     }
 
     //Update Trip by id
-
     @PutMapping("/update-trip/{id}")
     public ResponseEntity<TripGuide> updateTrip(@PathVariable(value = "id") Long tripId,
                                            @RequestBody TripGuide tripDetails) throws TripNotFoundException {

@@ -2,7 +2,7 @@ package com.tourism.app.clientManagment.security;
 
 import com.tourism.app.clientManagment.security.jwt.AuthEntryPointJwt;
 import com.tourism.app.clientManagment.security.jwt.AuthTokenFilter;
-import com.tourism.app.clientManagment.security.services.UserDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
+         securedEnabled = true,
+         jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -59,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //TODO: Modify this Paths
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/trip-guide/**").permitAll()
+                .antMatchers("/trip/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

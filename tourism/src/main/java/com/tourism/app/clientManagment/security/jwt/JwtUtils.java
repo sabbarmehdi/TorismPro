@@ -2,7 +2,7 @@ package com.tourism.app.clientManagment.security.jwt;
 
 import java.util.Date;
 
-import com.tourism.app.clientManagment.security.services.UserDetailsImpl;
+import com.tourism.app.clientManagment.services.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

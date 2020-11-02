@@ -1,4 +1,4 @@
-package com.tourism.app.clientManagment.security.services;
+package com.tourism.app.clientManagment.services;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.tourism.app.clientManagment.model.Client;
-import com.tourism.app.clientManagment.model.TourGuide;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +14,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
+
+    /*public static final String TOURIST =  "TOURIST";
+    public static final String GUIDE =  "GUIDE";
+    public static final String ADMIN =  "ADMIN";*/
 
     private Long id;
 
