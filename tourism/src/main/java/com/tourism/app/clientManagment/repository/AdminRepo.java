@@ -5,13 +5,15 @@ import com.tourism.app.clientManagment.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface AdminRepo extends JpaRepository<Admin, Long> {
 
 
-    Admin findByMail(String mail);
-    Admin findByUsername(String username);
+    Optional<Admin> findByMail(String mail);
+    Optional<Admin> findByUsername(String username);
 
     boolean existsByMail(String Email);
     boolean existsByUsername(String username);

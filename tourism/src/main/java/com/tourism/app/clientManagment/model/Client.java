@@ -32,8 +32,8 @@ public abstract class Client {
     @Column(name = "password")
     protected String password;
 
-    @Column(name = "role")
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))

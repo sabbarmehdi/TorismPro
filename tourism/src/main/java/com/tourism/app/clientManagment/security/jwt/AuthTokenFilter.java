@@ -8,7 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tourism.app.clientManagment.services.UserDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.AdminDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.GuideDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.TouristDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private TouristDetailsServiceImpl touristDetailsService;
+    @Autowired
+    private GuideDetailsServiceImpl guideDetailsService;
+    @Autowired
+    private AdminDetailsServiceImpl adminDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -36,8 +43,24 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                String userType = request.getHeader("User-Type");
+                        System.out.println("::::::::: username: " + username);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails;
+                switch(userType) {
+                    case UserDetailsImpl.TOURIST:
+                        userDetails = touristDetailsService.loadUserByUsername(username);
+                        break;
+                    case UserDetailsImpl.GUIDE:
+                        userDetails = guideDetailsService.loadUserByUsername(username);
+                        break;
+                    case UserDetailsImpl.ADMIN:
+                        userDetails = adminDetailsService.loadUserByUsername(username);
+                        break;
+                    default:
+                        userDetails = null;
+                }
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -47,6 +70,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
+
+        logger.info("request forwarded " + request.getServletPath() );
 
         filterChain.doFilter(request, response);
     }

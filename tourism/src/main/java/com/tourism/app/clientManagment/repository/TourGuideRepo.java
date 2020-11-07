@@ -13,8 +13,8 @@ public interface TourGuideRepo extends JpaRepository<TourGuide, Long> {
 
     Optional<TourGuide> findById(String id);
 
-    TourGuide findByMail(String mail);
-    TourGuide findByUsername(String username);
+    Optional<TourGuide> findByMail(String mail);
+    Optional<TourGuide> findByUsername(String username);
 
     boolean existsByMail(String email);
 

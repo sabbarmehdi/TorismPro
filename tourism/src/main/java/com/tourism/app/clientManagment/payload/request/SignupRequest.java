@@ -34,13 +34,15 @@ public class SignupRequest {
 
 	//@NotBlank
 	@Size(min = 6, max = 100)
-	private static String password;
+	private  String password;
 
-
+	//@NotBlank
 	private String cin;
 
+	//@NotBlank
 	private String license;
 
+	//@NotNull
 	private Car car;
 
 
@@ -84,12 +86,12 @@ public class SignupRequest {
 		this.role = role;
 	}
 
-	public static String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public static void setPassword(String password) {
-		SignupRequest.password = password;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getCin() {

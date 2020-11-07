@@ -1,8 +1,13 @@
 package com.tourism.app.clientManagment.security;
 
+import com.tourism.app.clientManagment.security.authProviders.AdminAuthenticationProvider;
+import com.tourism.app.clientManagment.security.authProviders.GuideAuthenticationProvider;
+import com.tourism.app.clientManagment.security.authProviders.TouristAuthenticationProvider;
 import com.tourism.app.clientManagment.security.jwt.AuthEntryPointJwt;
 import com.tourism.app.clientManagment.security.jwt.AuthTokenFilter;
-import com.tourism.app.clientManagment.services.UserDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.AdminDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.GuideDetailsServiceImpl;
+import com.tourism.app.clientManagment.services.TouristDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +30,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
-
+    TouristDetailsServiceImpl touristDetailsService;
+    @Autowired
+    GuideDetailsServiceImpl guideDetailsService;
+    @Autowired
+    AdminDetailsServiceImpl adminDetailsService;
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
@@ -37,7 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.authenticationProvider(getTouristAuthenticationProvider());
+        authenticationManagerBuilder.authenticationProvider(getGuideAuthenticationProvider());
+        authenticationManagerBuilder.authenticationProvider(getAdminAuthenticationProvider());
     }
 
     @Bean
@@ -64,5 +74,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public AdminAuthenticationProvider getAdminAuthenticationProvider() {
+        AdminAuthenticationProvider dao = new AdminAuthenticationProvider();
+        dao.setUserDetailsService(adminDetailsService);
+        dao.setPasswordEncoder(passwordEncoder());
+        return dao;
+    }
+    public TouristAuthenticationProvider getTouristAuthenticationProvider() {
+        TouristAuthenticationProvider dao = new TouristAuthenticationProvider();
+        dao.setUserDetailsService(touristDetailsService);
+        dao.setPasswordEncoder(passwordEncoder());
+        return dao;
+    }
+
+    public GuideAuthenticationProvider getGuideAuthenticationProvider() {
+        GuideAuthenticationProvider dao = new GuideAuthenticationProvider();
+        dao.setUserDetailsService(guideDetailsService);
+        dao.setPasswordEncoder(passwordEncoder());
+        return dao;
     }
 }
