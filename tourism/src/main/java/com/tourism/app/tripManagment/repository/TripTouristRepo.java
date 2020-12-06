@@ -14,4 +14,7 @@ public interface TripTouristRepo extends JpaRepository<TripTourist, Long> {
 
     @Query("select t from trip_tourist t where t.id=:id")
     TripTourist findTripById(Long id);
+
+    @Query("select t from trip_tourist t where t.clientId=:clientId")
+    List<TripTourist> findTripsByTourist(Long clientId );
 }

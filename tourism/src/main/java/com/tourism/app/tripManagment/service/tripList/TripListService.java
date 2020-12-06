@@ -10,5 +10,6 @@ public interface TripListService {
     List<TripTourist> retrieveTripsByName(String tripName);
     TripTourist retrieveTripById(Long id);
 
+    List<TripTourist> retrieveTripsByClient(Long clientId);
     //List<Trip> retrieveTripsByStartCity();
 }

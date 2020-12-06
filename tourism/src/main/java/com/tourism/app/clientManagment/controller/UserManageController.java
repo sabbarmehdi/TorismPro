@@ -1,10 +1,8 @@
 package com.tourism.app.clientManagment.controller;
 
 import com.tourism.app.clientManagment.exception.ClientNotFoundException;
-import com.tourism.app.clientManagment.model.Client;
 import com.tourism.app.clientManagment.model.TourGuide;
 import com.tourism.app.clientManagment.model.Tourist;
-import com.tourism.app.clientManagment.repository.ClientRepo;
 import com.tourism.app.clientManagment.repository.TourGuideRepo;
 import com.tourism.app.clientManagment.repository.TouristRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/manage")
 public class UserManageController {
-    @Autowired
-    private ClientRepo clientRepo;
     @Autowired
     private TouristRepo touristRepo;
     @Autowired
@@ -38,9 +34,8 @@ public class UserManageController {
 
         tourist.setFirstName(touristDetails.getFirstName());
         tourist.setLastName(touristDetails.getLastName());
-        tourist.setMail(touristDetails.getMail());
         tourist.setPassword(touristDetails.getPassword());
-        final Tourist updateTourist = clientRepo.save(tourist);
+        final Tourist updateTourist = touristRepo.save(tourist);
         return ResponseEntity.ok(updateTourist);
     }
 
@@ -52,7 +47,6 @@ public class UserManageController {
                 .orElseThrow(() -> new ClientNotFoundException("User not found for this Id ::" + guideId));
         guide.setFirstName(guideDetails.getFirstName());
         guide.setLastName(guideDetails.getLastName());
-        guide.setMail(guideDetails.getMail());
         guide.setPassword(guideDetails.getPassword());
         guide.setCin(guideDetails.getCin());
         guide.setLicense(guideDetails.getLicense());

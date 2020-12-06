@@ -26,8 +26,6 @@ public abstract class Client {
     @Size(max = 50)
     private String username;
 
-    @Column(name = "mail")
-    protected String mail;
 
     @Column(name = "password")
     protected String password;
@@ -39,28 +37,27 @@ public abstract class Client {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     protected Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    /*@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "trip_client",
                 joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"),
                 inverseJoinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "id"))
-    private Set<Trip> trips;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy="client",cascade = CascadeType.ALL)
+    private Set<Trip> trips ;*/
 
 
-    public Client(Long id, String firstName, String lastName, @NotBlank @Size(max = 50) String username, String mail, String password, Set<Role> roles, Set<Trip> trips) {
+    public Client(Long id, String firstName, String lastName, @NotBlank @Size(max = 50) String username, String password, Set<Role> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.mail = mail;
         this.password = password;
         this.roles = roles;
-        this.trips = trips;
     }
 
     public Client() {
     }
 
-    public Client(String username, String email, String encode) {
+    public Client(String username, String encode) {
     }
 
     public String getUsername() {
@@ -69,14 +66,6 @@ public abstract class Client {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Set<Trip> getTrips() {
-        return trips;
-    }
-
-    public void setTrips(Set<Trip> trips) {
-        this.trips = trips;
     }
 
     public Long getId() {
@@ -101,14 +90,6 @@ public abstract class Client {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getPassword() {

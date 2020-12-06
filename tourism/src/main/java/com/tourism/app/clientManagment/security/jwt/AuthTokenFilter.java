@@ -44,14 +44,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
                 String userType = request.getHeader("User-Type");
-                        System.out.println("::::::::: username: " + username);
+        logger.info("::::::::: username: " + userType);
 
                 UserDetails userDetails;
                 switch(userType) {
                     case UserDetailsImpl.TOURIST:
                         userDetails = touristDetailsService.loadUserByUsername(username);
                         break;
-                    case UserDetailsImpl.GUIDE:
+                    case UserDetailsImpl.TOURGUIDE:
                         userDetails = guideDetailsService.loadUserByUsername(username);
                         break;
                     case UserDetailsImpl.ADMIN:

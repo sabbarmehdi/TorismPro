@@ -20,7 +20,7 @@ public class Car {
     @OneToOne(mappedBy = "car")
     private TourGuide tourGuide;
 
-    public Car(Long id, String registrationNum, String model, String owner, int seatsNum, com.tourism.app.clientManagment.model.TourGuide tourGuide) {
+    public Car(Long id, String registrationNum, String model, String owner, int seatsNum, TourGuide tourGuide) {
         this.id = id;
         this.registrationNum = registrationNum;
         this.model = model;

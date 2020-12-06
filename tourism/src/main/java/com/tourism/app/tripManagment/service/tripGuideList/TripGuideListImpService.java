@@ -2,6 +2,7 @@ package com.tourism.app.tripManagment.service.tripGuideList;
 
 import com.tourism.app.tripManagment.exception.TripNotFoundException;
 import com.tourism.app.tripManagment.model.TripGuide;
+import com.tourism.app.tripManagment.model.TripTourist;
 import com.tourism.app.tripManagment.repository.TripGuideRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,10 @@ public class TripGuideListImpService implements TripGuideListService {
         TripGuide tripGuide = optionalTripGuide.orElseThrow(TripNotFoundException::new);
         return tripGuide;
     }
+
+    @Override
+    public List<TripGuide> retrieveTripsByUser(Long clientId) {
+        return (List<TripGuide>) tripGuideRepo.findTripsByTourGuide(clientId);
+    }
+
 }

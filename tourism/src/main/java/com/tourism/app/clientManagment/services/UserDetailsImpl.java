@@ -20,14 +20,12 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     public static final String TOURIST =  "TOURIST";
-    public static final String GUIDE =  "TOURGUIDE";
+    public static final String TOURGUIDE =  "TOURGUIDE";
     public static final String ADMIN =  "ADMIN";
 
     private Long id;
 
     private String username;
-
-    private String email;
 
     @JsonIgnore
     private String password;
@@ -36,29 +34,26 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password, String userType, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String username, String password, String userType, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.password = password;
         this.userType = userType;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(Tourist user) {
+    public static UserDetailsImpl buildTourist(Tourist user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
-
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
-                user.getMail(),
                 user.getPassword(),
                 TOURIST,
                 authorities);
     }
-    public static UserDetailsImpl build(TourGuide user) {
+    public static UserDetailsImpl buildGuide(TourGuide user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
@@ -66,12 +61,11 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
-                user.getMail(),
                 user.getPassword(),
-                GUIDE,
+                TOURGUIDE,
                 authorities);
     }
-    public static UserDetailsImpl build(Admin user) {
+    public static UserDetailsImpl buildAdmin(Admin user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
@@ -79,7 +73,6 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
-                user.getMail(),
                 user.getPassword(),
                 ADMIN,
                 authorities);
@@ -92,10 +85,6 @@ public class UserDetailsImpl implements UserDetails {
 
     public Long getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     @Override

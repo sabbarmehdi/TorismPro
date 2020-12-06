@@ -6,9 +6,9 @@ import javax.validation.constraints.Size;
 
 public class LoginRequest {
 	
-	@Email
+
 	@NotBlank
-	private String email;
+	private String username;
 
 	@Size(min=6)
 	@NotBlank
@@ -25,11 +25,11 @@ public class LoginRequest {
 	}
 
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

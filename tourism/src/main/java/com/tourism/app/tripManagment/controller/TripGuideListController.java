@@ -38,4 +38,10 @@ public class TripGuideListController {
         return new ResponseEntity<TripGuide>(trip, HttpStatus.OK);
     }
 
+    //
+    @GetMapping("/user/{clientId}")
+    public ResponseEntity<List<TripGuide>> getTripsByUser(@PathVariable Long clientId){
+        List<TripGuide> list = listService.retrieveTripsByUser(clientId);
+        return new ResponseEntity<List<TripGuide>>(list, HttpStatus.OK);
+    }
 }

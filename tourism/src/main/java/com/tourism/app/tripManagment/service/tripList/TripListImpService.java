@@ -33,4 +33,11 @@ public class TripListImpService implements TripListService {
         TripTourist tripTourist = optionalTripTourist.orElseThrow(TripNotFoundException::new);
         return tripTourist;
     }
+
+    @Override
+    public List<TripTourist> retrieveTripsByClient(Long clientId) {
+        return (List<TripTourist>) tripTouristRepo.findTripsByTourist(clientId);
+    }
+
+
 }

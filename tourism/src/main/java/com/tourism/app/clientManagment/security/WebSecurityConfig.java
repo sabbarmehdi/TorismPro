@@ -67,10 +67,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 //TODO: Modify this Paths
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/trip-guide/**").permitAll()
                 .antMatchers("/trip/**").permitAll()
+                .antMatchers("api/one-user/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -83,13 +85,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         dao.setPasswordEncoder(passwordEncoder());
         return dao;
     }
+    @Bean
     public TouristAuthenticationProvider getTouristAuthenticationProvider() {
         TouristAuthenticationProvider dao = new TouristAuthenticationProvider();
         dao.setUserDetailsService(touristDetailsService);
         dao.setPasswordEncoder(passwordEncoder());
         return dao;
     }
-
+    @Bean
     public GuideAuthenticationProvider getGuideAuthenticationProvider() {
         GuideAuthenticationProvider dao = new GuideAuthenticationProvider();
         dao.setUserDetailsService(guideDetailsService);

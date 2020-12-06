@@ -25,9 +25,9 @@ public class SignupRequest {
 	private String lastName;
 
 	//@NotBlank
-	@Size(max = 100)
+	/*@Size(max = 100)
 	@Email
-	private String email;
+	private String email;*/
 
 	private Set<String> role;
 
@@ -70,13 +70,13 @@ public class SignupRequest {
 		this.lastName = lastName;
 	}
 
-	public String getEmail() {
+	/*public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
+	}*/
 
 	public Set<String> getRole() {
 		return role;

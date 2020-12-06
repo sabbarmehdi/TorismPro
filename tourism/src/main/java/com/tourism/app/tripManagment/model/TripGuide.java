@@ -5,9 +5,8 @@ import com.tourism.app.clientManagment.model.Client;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
-import java.util.Set;
 
-@Entity
+@Entity(name = "trip_guide")
 public class TripGuide extends Trip {
 
     @Column(name = "price")
@@ -20,8 +19,8 @@ public class TripGuide extends Trip {
         this.tripeDate = tripeDate;
     }
 
-    public TripGuide(long id, String tripName, String description, Trajectory trajectory, Set<Client> clients, float price, Date tripeDate) {
-        super(id, tripName, description, trajectory, clients);
+    public TripGuide(java.lang.Long id, String tripName, String description, Trajectory trajectory, Long client, float price, Date tripeDate) {
+        super(id, tripName, description, trajectory, client);
         this.price = price;
         this.tripeDate = tripeDate;
     }

@@ -46,6 +46,12 @@ public class TripListController {
         return new ResponseEntity<TripTourist>(trip, HttpStatus.OK);
     }
 
+    @GetMapping("/user/{clientId}")
+    public ResponseEntity<List<TripTourist>> getTripsByUser(@PathVariable Long clientId){
+        List<TripTourist> list = tripListService.retrieveTripsByClient(clientId);
+        return new ResponseEntity<List<TripTourist>>(list, HttpStatus.OK);
+    }
+
     //Get Trips by City search
     /*public ResponseEntity<List<Trip>> getTripsByCity(){
      return null;

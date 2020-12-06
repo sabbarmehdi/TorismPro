@@ -14,13 +14,16 @@ import com.tourism.app.clientManagment.payload.request.SignupRequest;
 import com.tourism.app.clientManagment.payload.response.JwtResponse;
 import com.tourism.app.clientManagment.payload.response.MessageResponse;
 import com.tourism.app.clientManagment.repository.*;
+import com.tourism.app.clientManagment.security.authProviders.AdminAuthenticationProvider;
+import com.tourism.app.clientManagment.security.authProviders.GuideAuthenticationProvider;
 import com.tourism.app.clientManagment.security.authProviders.TouristAuthenticationProvider;
 import com.tourism.app.clientManagment.security.jwt.JwtUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import com.tourism.app.clientManagment.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -37,13 +40,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
 
+    @Autowired
     TouristAuthenticationProvider touristAuthenticationProvider;
-
     @Autowired
-    ClientRepo clientRepo;
+    GuideAuthenticationProvider guideAuthenticationProvider;
+    @Autowired
+    AdminAuthenticationProvider adminAuthenticationProvider;
 
     @Autowired
     RoleRepo roleRepo;
@@ -63,20 +66,34 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return authenticate(loginRequest, touristAuthenticationProvider);
     }
-    //TODO: create TourGuide and Admin SignIn Methods
+
+    @PostMapping("/guide/signin")
+    public ResponseEntity<?> authenticateGuide(@Valid @RequestBody LoginRequest loginRequest){
+        return authenticate(loginRequest, guideAuthenticationProvider);
+    }
+
+    @PostMapping("/admin/signin")
+    public ResponseEntity<?> authenticateAdmin(@Valid @RequestBody LoginRequest loginRequest) {
+        return authenticate(loginRequest, adminAuthenticationProvider);
+    }
 
     public ResponseEntity<?> authenticate(@Valid @RequestBody LoginRequest loginRequest, DaoAuthenticationProvider daoAuthenticationProvider) {
 
-        System.out.println(":::::::::::::::::::::::::::::::::::: SIGNIN");
-        System.out.println(":::::::::::::::::::email : " + loginRequest.getEmail());
-        System.out.println(":::::::::::::::::::password : " + loginRequest.getPassword());
+        /*System.out.println(":::::::::::::::::::::::::::::::::::: SIGNIN");
+        System.out.println(":::::::::::::::::::email : " + loginRequest.getUsername());
+        System.out.println(":::::::::::::::::::password : " + loginRequest.getPassword());*/
+        logger.info(":::::::::::::::::::email : " + loginRequest.getUsername());
+        logger.info("::::::::::::::::password : " + loginRequest.getPassword());
         try {
+            logger.warn("AuthController:" + loginRequest.getUsername());
             Authentication authentication = daoAuthenticationProvider.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtUtils.generateJwtToken(authentication);
@@ -85,17 +102,16 @@ public class AuthController {
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
-
+            logger.warn("AuthController:" + userDetails.getUserType());
             return ResponseEntity
                     .ok(new JwtResponse(jwt,
                             userDetails.getId(),
                             userDetails.getUsername(),
-                            userDetails.getEmail(),
                             userDetails.getUserType(),
                             roles));
         }catch (AuthenticationException exception){
             return ResponseEntity.badRequest()
-                                .body(new MessageResponse("Bad credentials"));
+                                .body(new MessageResponse("user ad illa gis kra"));
         }
     }
 
@@ -111,21 +127,15 @@ public class AuthController {
         if (touristRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: email is already taken!"));
         }
 
-        if (touristRepo.existsByMail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
 
         // Create new user's account
         Tourist tourist = new Tourist();
             tourist.setUsername(signUpRequest.getUsername());
             tourist.setFirstName(signUpRequest.getFirstName());
             tourist.setLastName(signUpRequest.getLastName());
-            tourist.setMail(signUpRequest.getEmail());
             tourist.setPassword(encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>();
@@ -166,21 +176,15 @@ public class AuthController {
         if (guideRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: email is already taken!"));
         }
 
-        if (guideRepo.existsByMail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
 
         // Create new Tour Guide's account
         TourGuide guide = new TourGuide();
         guide.setLastName(signUpRequest.getLastName());
         guide.setFirstName(signUpRequest.getFirstName());
         guide.setUsername(signUpRequest.getUsername());
-        guide.setMail(signUpRequest.getEmail());
         guide.setPassword(encoder.encode(signUpRequest.getPassword()));
         guide.setCin(signUpRequest.getCin());
         guide.setLicense(signUpRequest.getLicense());
@@ -202,7 +206,7 @@ public class AuthController {
         guidRoles.add(guideRole);
 
         guide.setRoles(guidRoles);
-        clientRepo.save(guide);
+        guideRepo.save(guide);
 
         return ResponseEntity.ok(new MessageResponse("Tour Guide registered successfully!"));
     }
@@ -212,21 +216,15 @@ public class AuthController {
         if (adminRepo.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: email is already taken!"));
         }
 
-        if (adminRepo.existsByMail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
 
         // Create new user's account
         Admin admin = new Admin();
             admin.setLastName(signUpRequest.getLastName());
             admin.setFirstName(signUpRequest.getFirstName());
             admin.setUsername(signUpRequest.getUsername());
-            admin.setMail(signUpRequest.getEmail());
             admin.setPassword(encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> adminRoles = new HashSet<>();
@@ -246,7 +244,7 @@ public class AuthController {
 
         admin.setRoles(adminRoles);
 
-        clientRepo.save(admin);
+        adminRepo.save(admin);
 
         return ResponseEntity.ok(new MessageResponse("Admin registered successfully!"));
     }

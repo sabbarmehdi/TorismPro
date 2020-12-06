@@ -19,7 +19,7 @@ public class GuideDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return  UserDetailsImpl.build(tourGuideRepo.findByMail(username)
+        return  UserDetailsImpl.buildGuide(tourGuideRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Tour Guide Not Found with Email: " + username)));
     }
 }
