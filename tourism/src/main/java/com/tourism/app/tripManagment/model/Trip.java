@@ -1,9 +1,8 @@
 package com.tourism.app.tripManagment.model;
 
 
-import com.tourism.app.clientManagment.model.Client;
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -11,7 +10,7 @@ public abstract class Trip {
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    protected java.lang.Long id;
+    protected Long id;
 
     @Column(name = "trip_name")
     protected String tripName;
@@ -23,6 +22,13 @@ public abstract class Trip {
     @JoinColumn(unique = true)
     protected Trajectory trajectory;
 
+
+    @Column(name = "trip_period")
+    protected int tripPeriod;
+
+    @Column(name = "starting_city")
+    protected String startingCity;
+
     /*@ManyToOne(cascade = CascadeType.ALL)*/
     @Column(name = "Client_id")
     private Long clientId;
@@ -30,12 +36,14 @@ public abstract class Trip {
     public Trip() {
     }
 
-    public Trip(java.lang.Long id, String tripName, String description, Trajectory trajectory, Long client) {
+    public Trip(Long id, String tripName, String description, Trajectory trajectory, int tripPeriod, String startingCity, Long clientId) {
         this.id = id;
         this.tripName = tripName;
         this.description = description;
         this.trajectory = trajectory;
-        this.clientId = client;
+        this.tripPeriod = tripPeriod;
+        this.startingCity = startingCity;
+        this.clientId = clientId;
     }
 
     public Long getClientId() {
@@ -46,11 +54,11 @@ public abstract class Trip {
         this.clientId = client;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,5 +84,22 @@ public abstract class Trip {
 
     public void setTrajectory(Trajectory trajectory) {
         this.trajectory = trajectory;
+    }
+
+
+    public int getTripPeriod() {
+        return tripPeriod;
+    }
+
+    public void setTripPeriod(int tripPeriod) {
+        this.tripPeriod = tripPeriod;
+    }
+
+    public String getStartingCity() {
+        return startingCity;
+    }
+
+    public void setStartingCity(String startingCity) {
+        this.startingCity = startingCity;
     }
 }

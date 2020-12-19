@@ -35,13 +35,13 @@ public class TripGuideManagerController {
         TripGuide trip = guideRepo.findById(tripId)
                 .orElseThrow(() -> new TripNotFoundException("Trip not found for this Id :: " + tripId));
 
+        //TOD Add other attributes
         trip.setTripName(tripDetails.getTripName());
         trip.setDescription(tripDetails.getDescription());
         //trajectoryRepo.deleteById(trip.getTrajectory().getId());
         //trip.setTrajectory(tripDetails.getTrajectory());
 
         Trajectory trajectory = trajectoryRepo.findById(trip.getTrajectory().getId()).get();
-        trajectory.setDescription(trip.getTrajectory().getDescription());
         trajectory.setDistance(trip.getTrajectory().getDistance());
         trajectory.setTrajectoryTime(trip.getTrajectory().getTrajectoryTime());
         Trajectory savedTrajectory = trajectoryRepo.save(trajectory);

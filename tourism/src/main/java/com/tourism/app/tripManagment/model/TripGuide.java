@@ -19,8 +19,8 @@ public class TripGuide extends Trip {
         this.tripeDate = tripeDate;
     }
 
-    public TripGuide(java.lang.Long id, String tripName, String description, Trajectory trajectory, Long client, float price, Date tripeDate) {
-        super(id, tripName, description, trajectory, client);
+    public TripGuide(Long id, String tripName, String description, Trajectory trajectory, int tripPeriod, String startingCity, Long clientId, float price, Date tripeDate) {
+        super(id, tripName, description, trajectory, tripPeriod, startingCity, clientId);
         this.price = price;
         this.tripeDate = tripeDate;
     }

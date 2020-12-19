@@ -9,7 +9,9 @@ public class TripTourist extends Trip {
     public TripTourist() {
     }
 
-    public TripTourist(java.lang.Long id, String tripName, String description, Trajectory trajectory, Long client) {
-        super(id, tripName, description, trajectory, client);
+    public TripTourist(Long id, String tripName, String description, Trajectory trajectory, int tripPeriod, String startingCity, Long clientId) {
+        super(id, tripName, description, trajectory, tripPeriod, startingCity, clientId);
     }
+
+
 }

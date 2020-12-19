@@ -39,6 +39,7 @@ public class TripManagerController {
         TripTourist trip = touristRepo.findById(tripId)
                 .orElseThrow(() -> new TripNotFoundException("Trip not found for this Id :: " + tripId));
 
+        //TOD: Add other attributes
         trip.setTripName(tripDetails.getTripName());
         trip.setDescription(tripDetails.getDescription());
         trajectoryRepo.deleteById(trip.getTrajectory().getId());
